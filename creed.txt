@@ -1,0 +1,44 @@
+#include<bits/stdc++.h>
+
+using namespace std;
+
+int oa(int n)
+{
+    int coun=0;
+    while(1)
+    {
+        coun++;
+        if(n==1)
+            return coun;
+
+        else if(n%2==0)
+            n=n/2 ;
+        else
+            n=n*3+1;
+    }
+}
+
+int main()
+{
+    int n1,n2,m=0,rv,x,y;
+
+
+    while(scanf("%d %d",&n1,&n2)==2){
+    if(n1<n2) {
+            x=n1;
+            y=n2;
+    }
+    else {
+            x=n2;
+            y=n1;
+    }
+    for(int i=x; i<=y; i++)
+    {
+        rv= oa(i);
+        if(rv>m)
+            m=rv;
+    }
+    printf("%d %d %d\n",n1,n2,m);
+    m=0;
+}
+}

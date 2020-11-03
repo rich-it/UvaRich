@@ -1,0 +1,155 @@
+
+//hint: I used 2D vector (block_arr) to initialize blocknumbers
+// then i used blocknum array to track every block's row postion or where it got stacked (for an exmp:
+// move 9 onto 1
+//where 9 was on 9th postion first then after the operation 9 will on 1st postion so blocknum[9] = blocknum[1]
+
+
+
+#include<bits/stdc++.h>
+
+using namespace std;
+
+int n;
+vector<int> block_arr[27];
+int blocknum [27];
+stack<int>pile;
+
+
+
+void move_onto_mathod( int a, int b){
+    int A= blocknum[a];
+    int B = blocknum[b];
+    int c;
+    while(block_arr[B].back()!=b){
+        c = block_arr[B].back();
+        block_arr[B].pop_back();
+        block_arr[c].push_back(c);
+        blocknum[c] = c;
+    }
+    while(block_arr[A].back()!=a){
+        c = block_arr[A].back();
+        block_arr[A].pop_back();
+        block_arr[c].push_back(c);
+        blocknum[c] = c;
+    }
+    block_arr[A].pop_back();
+    block_arr[B].push_back(a);
+    blocknum[a] = blocknum[b];
+}
+
+void move_over_mathod (int a, int b){
+    int A= blocknum[a];
+    int B= blocknum[b];
+    int c;
+    while(block_arr[A].back()!=a){
+        c = block_arr[A].back();
+        block_arr[A].pop_back();
+        block_arr[c].push_back(c);
+        blocknum[c] = c;
+    }
+    block_arr[A].pop_back();
+    block_arr[B].push_back(a);
+    blocknum[a] = blocknum[b];
+
+}
+
+void pile_onto_mathod (int a,int b){
+
+    int A= blocknum[a];
+    int B = blocknum[b];
+
+    int c;
+    while(block_arr[A].back()!= a){
+        c = block_arr[A].back();
+        pile.push(c);
+        block_arr[A].pop_back();
+        blocknum[c] = blocknum[b];
+    }
+
+      while(block_arr[B].back()!=b){
+        c = block_arr[B].back();
+        block_arr[B].pop_back();
+        block_arr[c].push_back(c);
+        blocknum[c] = c;
+    }
+
+    block_arr[A].pop_back();
+    block_arr[B].push_back(a);
+      while(!pile.empty()) {
+        block_arr[B].push_back(pile.top());
+        pile.pop();
+    }
+    blocknum[a] = blocknum[b];
+
+
+}
+
+
+void pile_over_mathod (int a,int b){
+
+    int A= blocknum[a];
+    int B = blocknum[b];
+
+    int c;
+    while(block_arr[A].back()!= a){
+        c = block_arr[A].back();
+        pile.push(c);
+        block_arr[A].pop_back();
+        blocknum[c] = blocknum[b];
+    }
+
+    block_arr[A].pop_back();
+    block_arr[B].push_back(a);
+      while(!pile.empty()) {
+        block_arr[B].push_back(pile.top());
+        pile.pop();
+    }
+    blocknum[a] = blocknum[b];
+
+
+}
+
+
+
+int main()
+{
+
+    string move_pile,over_onto;
+    int a,b;
+    cin>>n;
+    for(int i=0;i<n;i++){
+        block_arr[i].push_back(i);
+        blocknum[i] = i;
+    }
+
+    while(1){
+        cin>>move_pile;
+        if(move_pile=="quit") break;
+
+        cin>>a>>over_onto>>b;
+
+        if(a==b|| blocknum[a] == blocknum[b]) continue;
+
+        if(move_pile=="move" && over_onto == "onto") move_onto_mathod(a,b);
+
+        else if(move_pile == "move" && over_onto == "over") move_over_mathod(a,b);
+
+        else if( move_pile == "pile" && over_onto == "onto") pile_onto_mathod(a,b);
+
+         else if(move_pile =="pile" && over_onto == "over") pile_over_mathod(a,b);
+
+
+    }
+
+
+           for(int i=0;i<n;i++){
+            printf("%d:", i);
+            for(int j=0;j<block_arr[i].size();j++){
+
+                printf(" %d",block_arr[i][j]);
+            }
+            printf("\n");
+        }
+    return 0;
+}
